@@ -14,26 +14,30 @@
         </div>
       </div>
       <div class="inventory__grid">
-        <div class="cell cell1">
-          <div class="cell__img"></div>
-          <div class="cell__counter"><p class="cell__count">4</p></div>
-        </div>
-        <div class="cell">
-          <div class="cell__img"></div>
-          <div class="cell__counter"><p class="cell__count">2</p></div>
-        </div>
-        <div class="cell">
-          <div class="cell__img"></div>
-          <div class="cell__counter"><p class="cell__count">5</p></div>
-        </div>
-        <div class="cell">
-          <div class="cell__img"></div>
-          <div class="cell__counter"><p class="cell__count">2</p></div>
-        </div>
-        <div class="cell cell5">
-          <div class="cell__img"></div>
-          <div class="cell__counter"><p class="cell__count">5</p></div>
-        </div>
+          <div class="cell cell" v-for="ivent in ivents" :key="ivent" @click="modalVisible = true">
+            <img :src="`${ivent.src}`" class="cell__img"/>
+            <div class="cell__counter">
+              <p class="cell__count">{{ ivent.counter }}</p>
+            </div>
+          </div>
+
+          <div v-if="modalVisible">
+            <div class="inventory__modal" v-for="ivent in ivents" :key="ivent">
+              <button @click="modalVisible = false" class="button__close"></button>
+              <img :src="`${ivent.src}`" class="modal__img" alt="" />
+              <hr class="line-zero" />
+              <hr class="line-one" />
+              <hr class="line-two" />
+              <hr class="line-three" />
+              <hr class="line-four" />
+              <hr class="line-seven" />
+              <hr class="line-zero" />
+              <button class="button__delete">Удалить предмет</button>
+            </div>
+          </div>
+          
+
+      
       </div>
     </div>
     <div class="hint">
@@ -46,6 +50,20 @@
 <script>
 
 export default {
+  data() {
+    return {
+      ivents: [
+        {id: 1, counter: 4, src: require('./img/img-1.png')}, // преобразование пути к картинке в запрос модуля через require
+        {id: 2, counter: 2, src: require('./img/img-2.png')},
+        {id: 3, counter: 5, src: require('./img/img-3.png')}
+      ],
+      modalVisible: false,
+      
+    }
+  }, 
+
+  methods: {
+  }
 }
 </script>
 
@@ -87,6 +105,11 @@ export default {
   justify-content: space-between;
 }
 
+.line-zero {
+  width: 220px;
+  height: 1px;
+  background: #4D4D4D;
+}
 .line-one {
   width: 190px;
   height: 26px;
@@ -153,15 +176,16 @@ export default {
 }
 
 .inventory__grid{
+  position: relative;
   /* width: 525px; */
+  /* background: #4D4D4D; */
   background: #262626;
-  border: 1px solid #4D4D4D;
-  border-radius: 12px;
+  /* border-radius: 12px; */
 
   display: grid; 
-  grid-template-columns: [start] 105px [line2] 105px [line3] 105px [line4] 105px [line5] 105px [end];
+  grid-template-columns: repeat(5, 105px);
   grid-template-rows: repeat(5, 100px); 
-  gap: 0px 0px;
+  gap: 1px 1px;
 }
 
 .line2 {
@@ -169,17 +193,20 @@ export default {
 }
 
 .cell {
-  /* background: #262626; */
+  cursor: pointer;
+  
+  background: #262626;
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;  
+  justify-content: center;
+  box-shadow: 0px 0px 0px 1px #4D4D4D;
 }
 
 .cell__img {
   width: 54px;
   height: 54px;
-  background-image: url(./img/img-1.png);
+  /* background-image: url(./img/img-1.png); */
   background-position: center;
   background-repeat: no-repeat;
   background-size: 54px 54px;
@@ -206,6 +233,28 @@ export default {
   text-align: center;
   color: #FFFFFF;
   opacity: 0.4;
+}
+
+.inventory__modal {
+  width: 250px;
+  height: 500px;
+  padding: 55px 20px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(38, 38, 38, 0.5);
+  border-left: 1px solid #4D4D4D;
+  backdrop-filter: blur(8px);
+}
+
+.modal__img {
+  width: 130px;
+  height: 130px;
+  margin-bottom: 30px;
 }
 
 .hint {
@@ -237,6 +286,21 @@ export default {
   background-position: center;
   border: none;
   background-color: transparent;
+}
 
+.button__delete {
+  width: 220px;
+  height: 39px;
+  background: #FA7272;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #FFFFFF;
 }
 </style>
