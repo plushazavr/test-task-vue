@@ -13,7 +13,9 @@
           <hr class="line-seven"/>
         </div>
       </div>
+
       <div class="inventory__grid">
+
           <div class="cell cell" v-for="ivent in ivents" :key="ivent" @click="modalVisible = true">
             <img :src="`${ivent.src}`" class="cell__img"/>
             <div class="cell__counter">
@@ -22,7 +24,7 @@
           </div>
 
           <div v-if="modalVisible">
-            <div class="inventory__modal" v-for="ivent in ivents" :key="ivent">
+            <div class="inventory__modal" v-for="ivent in ivents" :key="ivent.id">
               <button @click="modalVisible = false" class="button__close"></button>
               <img :src="`${ivent.src}`" class="modal__img" alt="" />
               <hr class="line-zero" />
@@ -32,10 +34,9 @@
               <hr class="line-four" />
               <hr class="line-seven" />
               <hr class="line-zero" />
-              <button class="button__delete">Удалить предмет</button>
+              <button class="button__delete" @click="removeIvent(ivent)">Удалить предмет</button>
             </div>
-          </div>
-          
+          </div> 
 
       
       </div>
@@ -63,6 +64,10 @@ export default {
   }, 
 
   methods: {
+    removeIvent(ivents) {
+      this.ivents = this.ivents.filter(i => i.id !== ivents.id);
+      this.modalVisible = false;      
+    }
   }
 }
 </script>
